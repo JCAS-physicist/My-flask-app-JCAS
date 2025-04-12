@@ -1,6 +1,7 @@
 import matplotlib
 import os
 import shutil
+import tempfile
 import stat
 import subprocess
 from flask import Flask, request, jsonify, render_template, send_file
@@ -116,6 +117,8 @@ def build_data_filename(phi, ts):
     else:
         return f"Sk_eta_{phi}0_Temp_{ts}.dat"
 
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     result = None
@@ -133,44 +136,88 @@ def index():
         ts = float(request.form["ts"])
         select_option = request.form.get("Option")
 
-        exe = "structure_Apple_Silicon" if select_option == "Structure" else "dynamics_Apple_Silicon"
-        exe_path = ensure_executable_in_tmp(exe)
+        TMP_DIR = tempfile.gettempdir()  # /tmp
 
-        try:
-            process = subprocess.Popen(
-                [exe_path],
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-                cwd=TMP_DIR,
-            )
-            input_data = f"{big}\n{small}\n{phi}\n{ts}"
-            output, error = process.communicate(input=input_data)
+        if select_option == "Structure":
+            try:
+                # Ruta original del ejecutable
+                original_path = "./structure_Apple_Silicon"
+                # Ruta en el directorio temporal
+                structure_exec_path = os.path.join(TMP_DIR, "structure_Apple_Silicon")
 
-            if process.returncode == 0:
-                result = output.splitlines()[-1]
-                ratio = round(big / small, 2)
-                asym = round(ratio, 1)
-                if select_option == "Structure":
-                    s_k_cc(phi, ts)
-                    s_k_ca(phi, ts)
-                    s_k_aa(phi, ts)
-            else:
-                result = f"Error running Fortran: {error}"
-        except Exception as e:
-            result = f"Error: {str(e)}"
+                # Copiar el ejecutable si no está en /tmp y darle permisos
+                if not os.path.exists(structure_exec_path):
+                    shutil.copy(original_path, structure_exec_path)
+                    os.chmod(structure_exec_path, 0o755)
+
+                # Ejecutar el programa
+                process = subprocess.Popen(
+                    [structure_exec_path],
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
+
+                input_data = f"{big}\n{small}\n{phi}\n{ts}"
+                output, error = process.communicate(input=input_data)
+
+                if process.returncode == 0:
+                    result = output.splitlines()[-1]
+                    ratio = round(big / small, 2)
+                    asym = round(ratio, 1)
+                    S_k_cc = s_k_cc(phi, ts)
+                    S_k_ca = s_k_ca(phi, ts)
+                    S_k_aa = s_k_aa(phi, ts)
+                else:
+                    result = f"Error running Fortran: {error}"
+
+            except Exception as e:
+                result = f"Error: {str(e)}"
+
+        else:
+            try:
+                # Ruta del ejecutable dynamics
+                dynamics_exec_path = os.path.join(TMP_DIR, "dynamics_Apple_Silicon")
+                if not os.path.exists(dynamics_exec_path):
+                    shutil.copy("./dynamics_Apple_Silicon", dynamics_exec_path)
+                    os.chmod(dynamics_exec_path, 0o755)
+
+                process = subprocess.Popen(
+                    [dynamics_exec_path],
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
+
+                input_data = f"{big}\n{small}\n{phi}\n{ts}"
+                output, error = process.communicate(input=input_data)
+
+                if process.returncode == 0:
+                    result = output.splitlines()[-1]
+                    ratio = round(big / small, 2)
+                    asym = round(ratio, 1)
+                else:
+                    result = f"Error running Fortran: {error}"
+
+            except Exception as e:
+                result = f"Error: {str(e)}"
 
     return render_template("index.html", result=result, rat=asym, S_k_aa=S_k_aa, S_k_ca=S_k_ca, S_k_cc=S_k_cc, select_option=select_option)
 
+
 @app.route("/download_file_Sk_cc")
 def download_file_Sk_cc():
-    return send_file(os.path.join(TMP_DIR, "Sk_cc.dat"), as_attachment=True)
+    path = os.path.join(tempfile.gettempdir(), "Sk_cc.dat")
+    return send_file(path, as_attachment=True)
 
 @app.route("/download_file_Sk_ca")
 def download_file_Sk_ca():
-    return send_file(os.path.join(TMP_DIR, "Sk_ca.dat"), as_attachment=True)
+    path = os.path.join(tempfile.gettempdir(), "Sk_ca.dat")
+    return send_file(path, as_attachment=True)
 
 @app.route("/download_file_Sk_aa")
 def download_file_Sk_aa():
-    return send_file(os.path.join(TMP_DIR, "Sk_aa.dat"), as_attachment=True)
+    path = os.path.join(tempfile.gettempdir(), "Sk_aa.dat")
+    return send_file(path, as_attachment=True)
