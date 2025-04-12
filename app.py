@@ -12,6 +12,21 @@ matplotlib.use("Agg")
 app = Flask(__name__)
 TMP_DIR = "/tmp"
 
+
+structure_exec_path = os.path.join(TMP_DIR, "structure_Apple_Silicon")
+if not os.path.exists(structure_exec_path):
+    shutil.copy("./structure_Apple_Silicon", structure_exec_path)
+    os.chmod(structure_exec_path, 0o755)
+
+process = subprocess.Popen(
+    [structure_exec_path],
+    stdin=subprocess.PIPE,
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE,
+    text=True
+)
+
+
 def ensure_datafile_in_tmp(filename):
     src_path = os.path.abspath(filename)
     dst_path = os.path.join(TMP_DIR, filename)
@@ -33,79 +48,118 @@ def ensure_executable_in_tmp(filename):
 # también estén en /tmp para evitar errores de permisos
 
 def s_k_cc(phi, ts):
-    filename = build_data_filename(phi, ts)
-    datafile_path = ensure_datafile_in_tmp(filename)
+    import tempfile
+    import os
 
-    output_path = os.path.join(TMP_DIR, "Sk_cc.dat")
-    with open(datafile_path, "r") as Sks, open(output_path, "w") as sk_cc:
-        Sdk_cc = []
-        time = []
+    TMP_DIR = tempfile.gettempdir()
 
-        for columna in Sks:
-            t = columna.split()[0]
-            cation_cation = columna.split()[1]
+    lista = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    lista2 = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09]
+    if ((phi in lista) and (ts in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
+    elif((phi in lista) and (ts not in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
+    else:
+        path_file = f"Sk_eta_{phi}0_Temp_{ts}.dat"
 
-            sk_cc.write(t + "\t" + cation_cation + "\n")
-            time.append(float(t))
-            Sdk_cc.append(float(cation_cation))
+    with open(path_file, "r") as Sks:
+        sk_cc_path = os.path.join(TMP_DIR, "Sk_cc.dat")
+        with open(sk_cc_path, "w") as sk_cc:
+            Sdk_cc = []
+            time = []
 
+            for columna in Sks:
+                t = columna.split()[0]
+                cation_cation = columna.split()[1]
+
+                sk_cc.write(t + "\t" + cation_cation + "\n")
+                time.append(float(t))
+                Sdk_cc.append(float(cation_cation))
+
+    # Guardar imagen en /tmp
     plt.plot(time, Sdk_cc)
     plt.title("Structure Factor cation-cation")
     plt.xlabel("k $\sigma $")
     plt.ylabel("S(k)")
-    plt.savefig("./static/images/S(k)_cc.png")
+    plot_path = os.path.join(TMP_DIR, "S(k)_cc.png")
+    plt.savefig(plot_path)
     plt.close()
 
+    return sk_cc_path  # Devuelve la ruta completa
+
+def s_k_cc(phi, ts):
+    TMP_DIR = tempfile.gettempdir()
+
+    lista = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    lista2 = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09]
+    if ((phi in lista) and (ts in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
+    elif((phi in lista) and (ts not in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
+    else:
+        path_file = f"Sk_eta_{phi}0_Temp_{ts}.dat"
+
+    with open(path_file, "r") as Sks:
+        sk_cc_path = os.path.join(TMP_DIR, "Sk_cc.dat")
+        with open(sk_cc_path, "w") as sk_cc:
+            Sdk_cc = []
+            time = []
+
+            for columna in Sks:
+                t = columna.split()[0]
+                cation_cation = columna.split()[1]
+
+                sk_cc.write(t + "\t" + cation_cation + "\n")
+                time.append(float(t))
+                Sdk_cc.append(float(cation_cation))
+
+    # Guardar imagen en /tmp
+    plt.plot(time, Sdk_cc)
+    plt.title("Structure Factor cation-cation")
+    plt.xlabel("k $\sigma $")
+    plt.ylabel("S(k)")
+    plot_path = os.path.join(TMP_DIR, "S(k)_cc.png")
+    plt.savefig(plot_path)
+    plt.close()
+
+    return sk_cc_path  # Devuelve la ruta completa
 
 def s_k_ca(phi, ts):
-    filename = build_data_filename(phi, ts)
-    datafile_path = ensure_datafile_in_tmp(filename)
+    TMP_DIR = tempfile.gettempdir()
 
-    output_path = os.path.join(TMP_DIR, "Sk_ca.dat")
-    with open(datafile_path, "r") as Sks, open(output_path, "w") as sk_ca:
-        Sdk_ca = []
-        time = []
+    lista = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    lista2 = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09]
+    if ((phi in lista) and (ts in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
+    elif((phi in lista) and (ts not in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
+    else:
+        path_file = f"Sk_eta_{phi}0_Temp_{ts}.dat"
 
-        for columna in Sks:
-            t = columna.split()[0]
-            cation_anion = columna.split()[2]
+    with open(path_file, "r") as Sks:
+        sk_ca_path = os.path.join(TMP_DIR, "Sk_ca.dat")
+        with open(sk_ca_path, "w") as sk_ca:
+            Sdk_ca = []
+            time = []
 
-            sk_ca.write(t + "\t" + cation_anion + "\n")
-            time.append(float(t))
-            Sdk_ca.append(float(cation_anion))
+            for columna in Sks:
+                t = columna.split()[0]
+                cation_anion = columna.split()[1]
 
+                sk_ca.write(t + "\t" + cation_anion + "\n")
+                time.append(float(t))
+                Sdk_ca.append(float(cation_anion))
+
+    # Guardar imagen en /tmp
     plt.plot(time, Sdk_ca)
-    plt.title("Structure Factor cation-anion")
+    plt.title("Structure Factor cation-cation")
     plt.xlabel("k $\sigma $")
     plt.ylabel("S(k)")
-    plt.savefig("./static/images/S(k)_ca.png")
+    plot_path = os.path.join(TMP_DIR, "S(k)_ca.png")
+    plt.savefig(plot_path)
     plt.close()
 
-
-def s_k_aa(phi, ts):
-    filename = build_data_filename(phi, ts)
-    datafile_path = ensure_datafile_in_tmp(filename)
-
-    output_path = os.path.join(TMP_DIR, "Sk_aa.dat")
-    with open(datafile_path, "r") as Sks, open(output_path, "w") as sk_aa:
-        Sdk_aa = []
-        time = []
-
-        for columna in Sks:
-            t = columna.split()[0]
-            anion_anion = columna.split()[3]
-
-            sk_aa.write(t + "\t" + anion_anion + "\n")
-            time.append(float(t))
-            Sdk_aa.append(float(anion_anion))
-
-    plt.plot(time, Sdk_aa)
-    plt.title("Structure Factor anion-anion")
-    plt.xlabel("k $\sigma $")
-    plt.ylabel("S(k)")
-    plt.savefig("./static/images/S(k)_aa.png")
-    plt.close()
-
+    return sk_ca_path  # Devuelve la ruta completa
 
 def build_data_filename(phi, ts):
     lista = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
