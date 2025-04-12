@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MSA</title>
+    <link rel="stylesheet" href="static/assets/css/styles.css" />
+</head>
+<body>
+
+<h1>Calculate the arrest diagram</h1>
+<form method="POST">
+            <label for="name">Give me the size of the big in nm:</label>
+            <input type="text" id="big" name="big"><br>
+            <br>
+            <label for="name">Give me the size of the small in nm: </label>
+            <input type="text" id="small" name="small"><br>
+            <br>
+            <label for="name">Give me the volume fraction: </label>
+            <input type="number" name="phi" id="volume fraction" step="any">
+            <br>
+            <label for="name">Give me the reduced temperature: </label>
+            <input type="number" name="ts" id="temperature" step="any">
+            <br>
+            <label for="name">Choose an option: </label>
+            <select name="Option" id="option" size="2">
+                <option value="Structure"> Arrested or fluid, and S(k) </option>
+                <option value="Dynamics">Diffusion coeffient and MSD</option>
+            </select>
+            <br>
+            <input type="submit" value="Calculate">
+        </form>
+        <hr>
+
+        <div class="results">
+            {% if result %}
+                <h3>Results:</h3>
+                <p> The assymetry of your system is {{ rat }} . </p>
+                <h4> The Big The Small </h4>
+                <p>  {{ result }} </p>
+                <hr>
+                <p> These are the S(k): </p>
+
+            <div class="graph-container">
+                <img src="./static/images/S(k)_cc.png" alt="S(k)_cation-cation">
+                <img src="./static/images/S(k)_aa.png" alt="S(k)_cation-cation">
+                <img src="./static/images/S(k)_ca.png" alt="S(k)_cation-cation">
+            </div>
+                <hr>
+                <div class="download-links">
+                    <p> You can download the files here:</p>
+                    <a href="{{ url_for('download_file_Sk_cc') }}" download="Sk_cc.dat">S(k)_cc</a>
+                    <br>
+                    <a href="{{ url_for('download_file_Sk_ca') }}" download="Sk_ca.dat">S(k)_ca</a>
+                    <br>
+                    <a href="{{ url_for('download_file_Sk_aa') }}" download="Sk_aa.dat">S(k)_aa</a>
+                </div>
+
+        {% endif %}
+        </div>
+        <br>
+</body>
+<footer>
+    <p>Made with ♥️ in LANIMFE.</p>
+</footer>
+</html>
