@@ -11,6 +11,14 @@ matplotlib.use("Agg")
 app = Flask(__name__)
 TMP_DIR = "/tmp"
 
+def ensure_datafile_in_tmp(filename):
+    src_path = os.path.abspath(filename)
+    dst_path = os.path.join(TMP_DIR, filename)
+    if not os.path.exists(dst_path):
+        shutil.copy(src_path, dst_path)
+    return dst_path
+
+
 def ensure_executable_in_tmp(filename):
     src_path = os.path.abspath(filename)
     dst_path = os.path.join(TMP_DIR, filename)
@@ -24,10 +32,11 @@ def ensure_executable_in_tmp(filename):
 # también estén en /tmp para evitar errores de permisos
 
 def s_k_cc(phi, ts):
-    path_file = build_data_filename(phi, ts)
-    path_file = os.path.join(TMP_DIR, path_file)
+    filename = build_data_filename(phi, ts)
+    datafile_path = ensure_datafile_in_tmp(filename)
 
-    with open(path_file, "r") as Sks, open(os.path.join(TMP_DIR, "Sk_cc.dat"), "w") as sk_cc:
+    output_path = os.path.join(TMP_DIR, "Sk_cc.dat")
+    with open(datafile_path, "r") as Sks, open(output_path, "w") as sk_cc:
         Sdk_cc = []
         time = []
 
@@ -46,11 +55,13 @@ def s_k_cc(phi, ts):
     plt.savefig("./static/images/S(k)_cc.png")
     plt.close()
 
-def s_k_ca(phi, ts):
-    path_file = build_data_filename(phi, ts)
-    path_file = os.path.join(TMP_DIR, path_file)
 
-    with open(path_file, "r") as Sks, open(os.path.join(TMP_DIR, "Sk_ca.dat"), "w") as sk_ca:
+def s_k_ca(phi, ts):
+    filename = build_data_filename(phi, ts)
+    datafile_path = ensure_datafile_in_tmp(filename)
+
+    output_path = os.path.join(TMP_DIR, "Sk_ca.dat")
+    with open(datafile_path, "r") as Sks, open(output_path, "w") as sk_ca:
         Sdk_ca = []
         time = []
 
@@ -69,11 +80,13 @@ def s_k_ca(phi, ts):
     plt.savefig("./static/images/S(k)_ca.png")
     plt.close()
 
-def s_k_aa(phi, ts):
-    path_file = build_data_filename(phi, ts)
-    path_file = os.path.join(TMP_DIR, path_file)
 
-    with open(path_file, "r") as Sks, open(os.path.join(TMP_DIR, "Sk_aa.dat"), "w") as sk_aa:
+def s_k_aa(phi, ts):
+    filename = build_data_filename(phi, ts)
+    datafile_path = ensure_datafile_in_tmp(filename)
+
+    output_path = os.path.join(TMP_DIR, "Sk_aa.dat")
+    with open(datafile_path, "r") as Sks, open(output_path, "w") as sk_aa:
         Sdk_aa = []
         time = []
 
@@ -91,6 +104,7 @@ def s_k_aa(phi, ts):
     plt.ylabel("S(k)")
     plt.savefig("./static/images/S(k)_aa.png")
     plt.close()
+
 
 def build_data_filename(phi, ts):
     lista = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
