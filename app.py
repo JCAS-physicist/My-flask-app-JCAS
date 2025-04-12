@@ -1,10 +1,8 @@
-import		matplotlib
-		from flask import Flask, request, jsonify, render_template_string,
-		render_template, send_file
-		import subprocess
-		import matplotlib.pyplot as plt
-		matplotlib.
-use("Agg")
+import matplotlib
+from flask import Flask, request, jsonify, render_template_string, render_template, send_file
+import subprocess
+import matplotlib.pyplot as plt
+matplotlib.use("Agg")
 
 
 
