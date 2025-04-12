@@ -72,7 +72,7 @@ def index():
         ts = float(request.form["ts"])
         select_option = request.form.get("Option")
 
-        exe = "./structure_Apple_Silicon" if select_option == "Structure" else "./dynamics_Apple_Silicon"
+        exe = "structure_Apple_Silicon" if select_option == "Structure" else "dynamics_Apple_Silicon"
         exe_path = os.path.join(TMP_DIR, exe)
 
         try:
