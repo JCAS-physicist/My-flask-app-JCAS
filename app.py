@@ -23,7 +23,15 @@ def prepare_executable(binary_name):
     return tmp_bin_path
 
 def s_k_cc(phi, ts):
-    path_file = build_path(phi, ts)
+    lista = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    lista2 = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09]
+
+    if ((phi in lista) and (ts in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
+    elif ((phi in lista) and (ts not in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
+    else:
+        path_file = f"Sk_eta_{phi}0_Temp_{ts}.dat"
 
     with open(path_file, "r") as Sks:
         sk_cc_path = os.path.join(TMP_DIR, "Sk_cc.dat")
@@ -38,10 +46,12 @@ def s_k_cc(phi, ts):
                 time.append(float(t))
                 Sdk_cc.append(float(cation_cation))
 
+    print("Máximo de S(k) cc:", max(Sdk_cc))
+
     img_tmp_path = os.path.join(TMP_DIR, "S(k)_cc.png")
     plt.plot(time, Sdk_cc)
     plt.title("Structure Factor cation-cation")
-    plt.xlabel("k $\\sigma $")
+    plt.xlabel("k $\sigma $")
     plt.ylabel("S(k)")
     plt.savefig(img_tmp_path)
     plt.close()
@@ -50,8 +60,16 @@ def s_k_cc(phi, ts):
     shutil.copyfile(img_tmp_path, img_static_path)
     return "tmp/S(k)_cc.png"
 
+
 def s_k_ca(phi, ts):
-    path_file = build_path(phi, ts)
+    lista = [0.1 * i for i in range(1, 10)]
+    lista2 = [0.01 * i for i in range(1, 10)]
+    if ((phi in lista) and (ts in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
+    elif ((phi in lista) and (ts not in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
+    else:
+        path_file = f"Sk_eta_{phi}0_Temp_{ts}.dat"
 
     with open(path_file, "r") as Sks:
         sk_ca_path = os.path.join(TMP_DIR, "Sk_ca.dat")
@@ -69,7 +87,7 @@ def s_k_ca(phi, ts):
     img_tmp_path = os.path.join(TMP_DIR, "S(k)_ca.png")
     plt.plot(time, Sdk_ca)
     plt.title("Structure Factor cation-anion")
-    plt.xlabel("k $\\sigma $")
+    plt.xlabel("k $\sigma $")
     plt.ylabel("S(k)")
     plt.savefig(img_tmp_path)
     plt.close()
@@ -79,7 +97,14 @@ def s_k_ca(phi, ts):
     return "tmp/S(k)_ca.png"
 
 def s_k_aa(phi, ts):
-    path_file = build_path(phi, ts)
+    lista = [0.1 * i for i in range(1, 10)]
+    lista2 = [0.01 * i for i in range(1, 10)]
+    if ((phi in lista) and (ts in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
+    elif ((phi in lista) and (ts not in lista2)):
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
+    else:
+        path_file = f"Sk_eta_{phi}0_Temp_{ts}.dat"
 
     with open(path_file, "r") as Sks:
         sk_aa_path = os.path.join(TMP_DIR, "Sk_aa.dat")
@@ -97,7 +122,7 @@ def s_k_aa(phi, ts):
     img_tmp_path = os.path.join(TMP_DIR, "S(k)_aa.png")
     plt.plot(time, Sdk_aa)
     plt.title("Structure Factor anion-anion")
-    plt.xlabel("k $\\sigma $")
+    plt.xlabel("k $\sigma $")
     plt.ylabel("S(k)")
     plt.savefig(img_tmp_path)
     plt.close()
@@ -105,6 +130,7 @@ def s_k_aa(phi, ts):
     img_static_path = os.path.join(STATIC_TMP_DIR, "S(k)_aa.png")
     shutil.copyfile(img_tmp_path, img_static_path)
     return "tmp/S(k)_aa.png"
+
 
 def build_path(phi, ts):
     lista = [0.1 * i for i in range(1, 10)]
