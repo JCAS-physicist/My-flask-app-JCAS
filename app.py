@@ -26,7 +26,9 @@ def s_k_cc(phi, ts):
     lista = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     lista2 = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09]
 
-    if ((phi in lista) and (ts in lista2)):
+    if phi == 0.1 and ts == 0.1:
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}00.dat"
+    elif ((phi in lista) and (ts in lista2)):
         path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
     elif ((phi in lista) and (ts not in lista2)):
         path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
@@ -64,7 +66,10 @@ def s_k_cc(phi, ts):
 def s_k_ca(phi, ts):
     lista = [0.1 * i for i in range(1, 10)]
     lista2 = [0.01 * i for i in range(1, 10)]
-    if ((phi in lista) and (ts in lista2)):
+    
+    if phi == 0.1 and ts == 0.1:
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}00.dat"
+    elif ((phi in lista) and (ts in lista2)):
         path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
     elif ((phi in lista) and (ts not in lista2)):
         path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
@@ -99,7 +104,10 @@ def s_k_ca(phi, ts):
 def s_k_aa(phi, ts):
     lista = [0.1 * i for i in range(1, 10)]
     lista2 = [0.01 * i for i in range(1, 10)]
-    if ((phi in lista) and (ts in lista2)):
+    
+    if phi == 0.1 and ts == 0.1:
+        path_file = f"Sk_eta_{phi}00_Temp_{ts}00.dat"
+    elif ((phi in lista) and (ts in lista2)):
         path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
     elif ((phi in lista) and (ts not in lista2)):
         path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
