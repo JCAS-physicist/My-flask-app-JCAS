@@ -194,8 +194,8 @@ def index():
             result = f"Error: {str(e)}"
 
     response = render_template("index.html", result=result, rat=asym,
-                                S_k_aa=S_k_aa_path, S_k_ca=S_k_ca_path,
-                                S_k_cc=S_k_cc_path, select_option=select_option, timestamp=timestamp)
+                               S_k_aa=S_k_aa_path, S_k_ca=S_k_ca_path,
+                               S_k_cc=S_k_cc_path, select_option=select_option, timestamp=timestamp)
     response.cache_control.no_cache = True  # Asegura que no se cacheen
     return response
 
