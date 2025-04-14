@@ -13,6 +13,15 @@ TMP_DIR = tempfile.gettempdir()
 STATIC_TMP_DIR = os.path.join("static", "tmp")
 os.makedirs(STATIC_TMP_DIR, exist_ok=True)
 
+def prepare_executable(binary_name):
+    local_bin_path = os.path.join(os.getcwd(), binary_name)
+    tmp_bin_path = os.path.join(TMP_DIR, binary_name)
+
+    if not os.path.exists(tmp_bin_path):
+        shutil.copy(local_bin_path, tmp_bin_path)
+        os.chmod(tmp_bin_path, 0o755)
+    return tmp_bin_path
+
 def s_k_cc(phi, ts):
     path_file = build_path(phi, ts)
 
@@ -32,7 +41,7 @@ def s_k_cc(phi, ts):
     img_tmp_path = os.path.join(TMP_DIR, "S(k)_cc.png")
     plt.plot(time, Sdk_cc)
     plt.title("Structure Factor cation-cation")
-    plt.xlabel("k $\sigma $")
+    plt.xlabel("k $\\sigma $")
     plt.ylabel("S(k)")
     plt.savefig(img_tmp_path)
     plt.close()
@@ -60,7 +69,7 @@ def s_k_ca(phi, ts):
     img_tmp_path = os.path.join(TMP_DIR, "S(k)_ca.png")
     plt.plot(time, Sdk_ca)
     plt.title("Structure Factor cation-anion")
-    plt.xlabel("k $\sigma $")
+    plt.xlabel("k $\\sigma $")
     plt.ylabel("S(k)")
     plt.savefig(img_tmp_path)
     plt.close()
@@ -88,7 +97,7 @@ def s_k_aa(phi, ts):
     img_tmp_path = os.path.join(TMP_DIR, "S(k)_aa.png")
     plt.plot(time, Sdk_aa)
     plt.title("Structure Factor anion-anion")
-    plt.xlabel("k $\sigma $")
+    plt.xlabel("k $\\sigma $")
     plt.ylabel("S(k)")
     plt.savefig(img_tmp_path)
     plt.close()
@@ -124,11 +133,12 @@ def index():
         ts = float(request.form["ts"])
         select_option = request.form.get("Option")
 
-        bin_path = os.path.join(TMP_DIR, "structure_Apple_Silicon" if select_option == "Structure" else "dynamics_Apple_Silicon")
+        bin_name = "structure_Apple_Silicon" if select_option == "Structure" else "dynamics_Apple_Silicon"
+        bin_path = prepare_executable(bin_name)
 
         try:
             input_data = f"{big}\n{small}\n{phi}\n{ts}\n"
-            process = subprocess.Popen([bin_path], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            process = subprocess.Popen(["/usr/bin/env", bin_path], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             output, error = process.communicate(input=input_data)
 
             if process.returncode == 0:
