@@ -184,6 +184,12 @@ def index():
                     S_k_cc_path = s_k_cc(phi, ts)
                     S_k_ca_path = s_k_ca(phi, ts)
                     S_k_aa_path = s_k_aa(phi, ts)
+
+                timestamp = str(time.time())  # Genera un timestamp único
+                S_k_cc_path = f"{S_k_cc_path}?t={timestamp}"
+                S_k_ca_path = f"{S_k_ca_path}?t={timestamp}"
+                S_k_aa_path = f"{S_k_aa_path}?t={timestamp}"
+
             else:
                 result = f"Error running Fortran: {error}"
         except Exception as e:
