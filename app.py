@@ -133,7 +133,7 @@ def index():
         ts = float(request.form["ts"])
         select_option = request.form.get("Option")
 
-        bin_name = "structure_Apple_Silicon" if select_option == "Structure" else "dynamics_Apple_Silicon"
+        bin_name = "structure" if select_option == "Structure" else "dynamics"
         bin_path = prepare_executable(bin_name)
 
         try:
