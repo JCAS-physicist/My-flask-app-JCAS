@@ -59,9 +59,9 @@ def s_k_cc(phi, ts):
     plt.savefig(img_tmp_path)
     plt.close()
 
-    img_static_path = os.path.join(STATIC_TMP_DIR, "S(k)_cc.png")
+    img_static_path = os.path.join(STATIC_TMP_DIR, "Sk_cc.png")
     shutil.copyfile(img_tmp_path, img_static_path)
-    return "tmp/S(k)_cc.png"
+    return "tmp/Sk_cc.png"
 
 
 def s_k_ca(phi, ts):
@@ -90,7 +90,7 @@ def s_k_ca(phi, ts):
                 time.append(float(t))
                 Sdk_ca.append(float(cation_anion))
 
-    img_tmp_path = os.path.join(TMP_DIR, "S(k)_ca.png")
+    img_tmp_path = os.path.join(TMP_DIR, "Sk_ca.png")
     plt.plot(time, Sdk_ca)
     plt.title("Structure Factor cation-anion")
     plt.xlabel("k $\sigma $")
@@ -100,7 +100,7 @@ def s_k_ca(phi, ts):
 
     img_static_path = os.path.join(STATIC_TMP_DIR, "S(k)_ca.png")
     shutil.copyfile(img_tmp_path, img_static_path)
-    return "tmp/S(k)_ca.png"
+    return "tmp/Sk_ca.png"
 
 def s_k_aa(phi, ts):
     lista = [0.1 * i for i in range(1, 10)]
@@ -128,7 +128,7 @@ def s_k_aa(phi, ts):
                 time.append(float(t))
                 Sdk_aa.append(float(anion_anion))
 
-    img_tmp_path = os.path.join(TMP_DIR, "S(k)_aa.png")
+    img_tmp_path = os.path.join(TMP_DIR, "Sk_aa.png")
     plt.plot(time, Sdk_aa)
     plt.title("Structure Factor anion-anion")
     plt.xlabel("k $\sigma $")
@@ -138,7 +138,7 @@ def s_k_aa(phi, ts):
 
     img_static_path = os.path.join(STATIC_TMP_DIR, "S(k)_aa.png")
     shutil.copyfile(img_tmp_path, img_static_path)
-    return "tmp/S(k)_aa.png"
+    return "tmp/Sk_aa.png"
 
 def msd_jcas(phi, ts):
     lista = [0.1 * i for i in range(1, 10)]
