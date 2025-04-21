@@ -100,7 +100,7 @@
             <a href="{{ url_for('download_file_Sk_aa') }}" download="Sk_aa.dat">S(k)_aa</a>
         </div>
         {% elif select_option == "Dynamics" %}
-        <p>These are the Dynamics results for phi = {{ phi }} and T* = {{ ts }}::</p>
+        <p>These are the Dynamics results for &phi; = {{ phi }} and T<sup>*</sup> = {{ ts }}::</p>
         <div class="graph-container">
             <img src="{{ url_for('static', filename='tmp/MSD.png') }}" alt="MSD">
         </div>
