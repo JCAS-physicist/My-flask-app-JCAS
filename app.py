@@ -140,6 +140,51 @@ def s_k_aa(phi, ts):
     shutil.copyfile(img_tmp_path, img_static_path)
     return "tmp/S(k)_aa.png"
 
+def msd_jcas(phi, ts):
+    lista = [0.1 * i for i in range(1, 10)]
+    lista2 = [0.01 * i for i in range(1, 10)]
+    
+    if ((phi in lista) and (ts in lista)):
+        path_file = f"Wt_eta_{phi}00_Temp_{ts}00.dat"
+    elif ((phi in lista) and (ts in lista2)):
+        path_file = f"Wt_eta_{phi}00_Temp_{ts}0.dat"
+    elif ((phi in lista) and (ts not in lista2)):
+        path_file = f"Wt_eta_{phi}00_Temp_{ts}.dat"
+    else:
+        path_file = f"Wt_eta_{phi}0_Temp_{ts}.dat"
+
+    with open(path_file, "r") as MSD_com:
+        msd_a = []
+        msd_c = []
+        time = []
+
+        for columna in MSD_com:
+            t = columna.split()[0]
+            anion = columna.split()[2]
+            cation = columna.split()[1]
+            
+            time.append(float(t))
+            msd_a.append(float(anion))
+            msd_c.append(float(cation))
+
+    img_tmp_path = os.path.join(TMP_DIR, "MSD.png")
+
+    plt.plot(tiempo, msd_a, label="Anion", marker="o")
+    plt.plot(tiempo, msd_c, label="Cation", marker="s")
+
+    plt.xscale("log")
+    plt.yscale("log")
+    
+    plt.title("MSD")
+    plt.xlabel("Time")
+    plt.ylabel("MSD")
+    plt.savefig(img_tmp_path)
+    plt.close()
+
+    img_static_path = os.path.join(STATIC_TMP_DIR, "MSD.png")
+    shutil.copyfile(img_tmp_path, img_static_path)
+    return "tmp/MSD.png"
+
 
 def build_path(phi, ts):
     lista = [0.1 * i for i in range(1, 10)]
@@ -159,6 +204,7 @@ def index():
     S_k_cc_path = None
     S_k_ca_path = None
     S_k_aa_path = None
+    msd = None
     select_option = None
 
     timestamp = str(time.time())
@@ -188,6 +234,9 @@ def index():
                     S_k_ca_path = s_k_ca(phi, ts)
                     S_k_aa_path = s_k_aa(phi, ts)
 
+                elif select_option == "dynamics":
+                    msd = msd_jcas(phi, ts)
+
             else:
                 result = f"Error running Fortran: {error}"
         except Exception as e:
@@ -195,7 +244,7 @@ def index():
 
     html = render_template("index.html", result=result, rat=asym,
                                S_k_aa=S_k_aa_path, S_k_ca=S_k_ca_path,
-                               S_k_cc=S_k_cc_path, select_option=select_option, timestamp=timestamp)
+                               S_k_cc=S_k_cc_path, msd=msd, select_option=select_option, timestamp=timestamp)
     response = make_response(html)
     response.cache_control.no_cache = True  # Asegura que no se cacheen
     return response
