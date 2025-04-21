@@ -169,8 +169,8 @@ def msd_jcas(phi, ts):
 
     img_tmp_path = os.path.join(TMP_DIR, "MSD.png")
 
-    plt.plot(tiempo, msd_a, label="Anion", marker="o")
-    plt.plot(tiempo, msd_c, label="Cation", marker="s")
+    plt.plot(time, msd_a, label="Anion", marker="o")
+    plt.plot(time, msd_c, label="Cation", marker="s")
 
     plt.xscale("log")
     plt.yscale("log")
