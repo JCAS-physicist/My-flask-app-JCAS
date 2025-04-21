@@ -34,6 +34,8 @@ def s_k_cc(phi, ts):
 
     if ts < 1:
         ts_str = f"{ts:.3f}"  
+    elif ts < 10:
+        ts_str = f"{ts:.3f}"
     else:
         ts_str = f"{int(ts)}"  
 
@@ -78,7 +80,9 @@ def s_k_ca(phi, ts):
         phi_str = f"{int(phi) * 10}"  
 
     if ts < 1:
-        ts_str = f"{ts:.3f}"  
+        ts_str = f"{ts:.3f}" 
+    elif ts < 10:
+        ts_str = f"{ts:.3f}"
     else:
         ts_str = f"{int(ts)}"  
 
@@ -119,7 +123,9 @@ def s_k_aa(phi, ts):
         phi_str = f"{int(phi) * 10}"  
 
     if ts < 1:
-        ts_str = f"{ts:.3f}"  
+        ts_str = f"{ts:.3f}"
+    elif ts < 10:
+        ts_str = f"{ts:.3f}"
     else:
         ts_str = f"{int(ts)}"  
 
@@ -160,7 +166,9 @@ def msd_jcas(phi, ts):
         phi_str = f"{int(phi) * 10}"  
 
     if ts < 1:
-        ts_str = f"{ts:.3f}"  
+        ts_str = f"{ts:.3f}"
+    elif ts < 10:
+        ts_str = f"{ts:.3f}"
     else:
         ts_str = f"{int(ts)}"  
 
