@@ -4,67 +4,119 @@
   <meta charset="UTF-8">
   <title>MSA</title>
   <link rel="stylesheet" href="static/assets/css/styles.css" />
+  <style>
+    /* Estilo para la pantalla de carga */
+    #loadingMessage {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        flex-direction: column;
+        color: white;
+        font-size: 1.5rem;
+        text-align: center;
+        display: none;
+    }
+
+    /* Spinner */
+    .spinner {
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #ffffff;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
 
 <h1>Calculate the arrest diagram</h1>
-<form method="POST">
-  <label for="name">Give me the size of the big in nm:</label>
-  <input type="text" id="big" name="big"><br><br>
-
-  <label for="name">Give me the size of the small in nm:</label>
-  <input type="text" id="small" name="small"><br><br>
-
-  <label for="name">Give me the volume fraction:</label>
-  <input type="number" name="phi" id="volume fraction" step="any"><br>
-
-  <label for="name">Give me the reduced temperature:</label>
-  <input type="number" name="ts" id="temperature" step="any"><br>
-
-  <label for="name">Choose an option:</label>
-  <select name="Option" id="option" size="2">
-    <option value="Structure"> Arrested or fluid, and S(k). </option>
-    <option value="Dynamics">Diffusion coeffient and MSD (still working on this).</option>
-  </select><br>
-
-  <input type="submit" value="Calculate">
+<form method="POST" onsubmit="return showLoadingMessage()">
+    <label for="name">Give me the size of the big in nm:</label>
+    <input type="text" id="big" name="big"><br>
+    <br>
+    <label for="name">Give me the size of the small in nm: </label>
+    <input type="text" id="small" name="small"><br>
+    <br>
+    <label for="name">Give me the volume fraction: </label>
+    <input type="number" name="phi" id="volume fraction" step="any">
+    <br>
+    <label for="name">Give me the reduced temperature: </label>
+    <input type="number" name="ts" id="temperature" step="any">
+    <br>
+    <label for="name">Choose an option: </label>
+    <select name="Option" id="option" size="2">
+        <option value="Structure"> Arrested or fluid, and S(k) </option>
+        <option value="Dynamics">Diffusion coeffient and MSD</option>
+    </select>
+    <br>
+    <input type="submit" value="Calculate">
 </form>
+
+<!-- Mensaje de carga con spinner -->
+<div id="loadingMessage">
+    <div class="spinner"></div>
+    <div>
+        Por favor espera, el programa está corriendo.<br>
+        Esto tomará alrededor de 5-10 minutos...
+    </div>
+</div>
 
 <hr>
 
 <div class="results">
-  {% if result %}
-    <h3>Results:</h3>
-    <p> The assymetry of your system is {{ rat }} . </p>
-    <h4> The Big The Small </h4>
-    <p>  {{ result }} </p>
-    <hr>
-    <p> These are the S(k): </p>
+    {% if result %}
+        <h3>Results:</h3>
+        <p> The assymetry of your system is {{ rat }} . </p>
+        <h4> The Big The Small </h4>
+        <p>  {{ result }} </p>
+        <hr>
+        <p> These are the S(k): </p>
 
-    <div class="graph-container">
-      <!-- Añadir timestamp a las imágenes -->
-      <img src="{{ url_for('static', filename='tmp/S(k)_cc.png') }}?t={{ timestamp }}" alt="S(k)_cation-cation">
-      <img src="{{ url_for('static', filename='tmp/S(k)_aa.png') }}?t={{ timestamp }}" alt="S(k)_anion-anion">
-      <img src="{{ url_for('static', filename='tmp/S(k)_ca.png') }}?t={{ timestamp }}" alt="S(k)_cation-anion">
-    </div>
-
-    <hr>
-
-    <div class="download-links">
-      <p> You can download the files here:</p>
-      <a href="{{ url_for('download_file_Sk_cc') }}" download="Sk_cc.dat">S(k)_cc</a><br>
-      <a href="{{ url_for('download_file_Sk_ca') }}" download="Sk_ca.dat">S(k)_ca</a><br>
-      <a href="{{ url_for('download_file_Sk_aa') }}" download="Sk_aa.dat">S(k)_aa</a>
-    </div>
-
-  {% endif %}
+        <div class="graph-container">
+            <img src="./static/images/S(k)_cc.png" alt="S(k)_cation-cation">
+            <img src="./static/images/S(k)_aa.png" alt="S(k)_cation-cation">
+            <img src="./static/images/S(k)_ca.png" alt="S(k)_cation-cation">
+        </div>
+        <hr>
+        <div class="download-links">
+            <p> You can download the files here:</p>
+            <a href="{{ url_for('download_file_Sk_cc') }}" download="Sk_cc.dat">S(k)_cc</a>
+            <br>
+            <a href="{{ url_for('download_file_Sk_ca') }}" download="Sk_ca.dat">S(k)_ca</a>
+            <br>
+            <a href="{{ url_for('download_file_Sk_aa') }}" download="Sk_aa.dat">S(k)_aa</a>
+        </div>
+    {% endif %}
 </div>
-
 <br>
 
-</body>
+<!-- Script que muestra el mensaje si se elige "Dynamics" -->
+<script>
+function showLoadingMessage() {
+    const selectedOption = document.getElementById("option").value;
+    if (selectedOption === "Dynamics") {
+        document.getElementById("loadingMessage").style.display = "flex";
+    }
+    return true; // permitir que el form se envíe
+}
+</script>
 
+</body>
 <footer>
-  <p>Made with ♥️ in LANIMFE by JCAS.</p>
+    <p>Made with ♥️ in LANIMFE by JCAS.</p>
 </footer>
 </html>
