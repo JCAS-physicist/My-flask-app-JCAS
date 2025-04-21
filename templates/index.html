@@ -88,9 +88,9 @@
         {% if select_option == "Structure" %}
         <p>These are the S(k):</p>
         <div class="graph-container">
-            <img src="{{ url_for('static', filename='Sk_cc') }}" alt="S(k)_cation-cation">
-            <img src="{{ url_for('static', filename='Sk_aa') }}" alt="S(k)_anion-anion">
-            <img src="{{ url_for('static', filename='Sk_ca') }}" alt="S(k)_cation-anion">
+            <img src="{{ url_for('static', filename='tmp/Sk_cc.png') }}" alt="S(k)_cation-cation">
+            <img src="{{ url_for('static', filename='tmp/Sk_aa.png') }}" alt="S(k)_anion-anion">
+            <img src="{{ url_for('static', filename='tmp/Sk_ca.png') }}" alt="S(k)_cation-anion">
         </div>
         <hr>
         <div class="download-links">
@@ -102,7 +102,7 @@
         {% elif select_option == "Dynamics" %}
         <p>These are the Dynamics results:</p>
         <div class="graph-container">
-            <img src="{{ url_for('static', filename='msd') }}" alt="MSD">
+            <img src="{{ url_for('static', filename='tmp/MSD.png') }}" alt="MSD">
         </div>
         {% endif %}
     {% endif %}
