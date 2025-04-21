@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>MSA</title>
-  <link rel="stylesheet" href="static/assets/css/styles.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/styles.css') }}">
   <style>
     /* Estilo para la pantalla de carga */
     #loadingMessage {
@@ -45,24 +45,24 @@
 
 <h1>Calculate the arrest diagram</h1>
 <form method="POST" onsubmit="return showLoadingMessage()">
-    <label for="name">Give me the size of the big in nm:</label>
-    <input type="text" id="big" name="big"><br>
-    <br>
-    <label for="name">Give me the size of the small in nm: </label>
-    <input type="text" id="small" name="small"><br>
-    <br>
-    <label for="name">Give me the volume fraction: </label>
-    <input type="number" name="phi" id="volume fraction" step="any">
-    <br>
-    <label for="name">Give me the reduced temperature: </label>
-    <input type="number" name="ts" id="temperature" step="any">
-    <br>
-    <label for="name">Choose an option: </label>
+    <label for="big">Give me the size of the big in nm:</label>
+    <input type="text" id="big" name="big"><br><br>
+
+    <label for="small">Give me the size of the small in nm:</label>
+    <input type="text" id="small" name="small"><br><br>
+
+    <label for="phi">Give me the volume fraction:</label>
+    <input type="number" name="phi" id="phi" step="any"><br><br>
+
+    <label for="ts">Give me the reduced temperature:</label>
+    <input type="number" name="ts" id="ts" step="any"><br><br>
+
+    <label for="option">Choose an option:</label>
     <select name="Option" id="option" size="2">
-        <option value="Structure"> Arrested or fluid, and S(k) </option>
-        <option value="Dynamics">Diffusion coeffient and MSD</option>
-    </select>
-    <br>
+        <option value="Structure">Arrested or fluid, and S(k)</option>
+        <option value="Dynamics">Diffusion coefficient and MSD</option>
+    </select><br><br>
+
     <input type="submit" value="Calculate">
 </form>
 
@@ -71,7 +71,7 @@
     <div class="spinner"></div>
     <div>
         Please wait, the program is running.<br>
-        This will take about 5-10 minutes...
+        This will take about 5–10 minutes...
     </div>
 </div>
 
@@ -80,26 +80,31 @@
 <div class="results">
     {% if result %}
         <h3>Results:</h3>
-        <p> The assymetry of your system is {{ rat }} . </p>
-        <h4> The Big The Small </h4>
-        <p>  {{ result }} </p>
+        <p>The asymmetry of your system is {{ rat }}.</p>
+        <h4>The Big The Small</h4>
+        <p>{{ result }}</p>
         <hr>
-        <p> These are the S(k): </p>
 
+        {% if select_option == "Structure" %}
+        <p>These are the S(k):</p>
         <div class="graph-container">
-            <img src="./static/temp/S(k)_cc.png" alt="S(k)_cation-cation">
-            <img src="./static/temp/S(k)_aa.png" alt="S(k)_cation-cation">
-            <img src="./static/temp/S(k)_ca.png" alt="S(k)_cation-cation">
+            <img src="{{ url_for('static', filename='temp/S(k)_cc.png') }}" alt="S(k)_cation-cation">
+            <img src="{{ url_for('static', filename='temp/S(k)_aa.png') }}" alt="S(k)_anion-anion">
+            <img src="{{ url_for('static', filename='temp/S(k)_ca.png') }}" alt="S(k)_cation-anion">
         </div>
         <hr>
         <div class="download-links">
-            <p> You can download the files here:</p>
-            <a href="{{ url_for('download_file_Sk_cc') }}" download="Sk_cc.dat">S(k)_cc</a>
-            <br>
-            <a href="{{ url_for('download_file_Sk_ca') }}" download="Sk_ca.dat">S(k)_ca</a>
-            <br>
+            <p>You can download the files here:</p>
+            <a href="{{ url_for('download_file_Sk_cc') }}" download="Sk_cc.dat">S(k)_cc</a><br>
+            <a href="{{ url_for('download_file_Sk_ca') }}" download="Sk_ca.dat">S(k)_ca</a><br>
             <a href="{{ url_for('download_file_Sk_aa') }}" download="Sk_aa.dat">S(k)_aa</a>
         </div>
+        {% elif select_option == "Dynamics" %}
+        <p>These are the Dynamics results:</p>
+        <div class="graph-container">
+            <img src="{{ url_for('static', filename='temp/MSD.png') }}" alt="MSD">
+        </div>
+        {% endif %}
     {% endif %}
 </div>
 <br>
@@ -111,7 +116,7 @@ function showLoadingMessage() {
     if (selectedOption === "Dynamics") {
         document.getElementById("loadingMessage").style.display = "flex";
     }
-    return true; // permitir que el form se envíe
+    return true;
 }
 </script>
 
