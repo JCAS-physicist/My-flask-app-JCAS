@@ -98,7 +98,7 @@ def s_k_ca(phi, ts):
     plt.savefig(img_tmp_path)
     plt.close()
 
-    img_static_path = os.path.join(STATIC_TMP_DIR, "S(k)_ca.png")
+    img_static_path = os.path.join(STATIC_TMP_DIR, "Sk_ca.png")
     shutil.copyfile(img_tmp_path, img_static_path)
     return "tmp/Sk_ca.png"
 
@@ -136,7 +136,7 @@ def s_k_aa(phi, ts):
     plt.savefig(img_tmp_path)
     plt.close()
 
-    img_static_path = os.path.join(STATIC_TMP_DIR, "S(k)_aa.png")
+    img_static_path = os.path.join(STATIC_TMP_DIR, "Sk_aa.png")
     shutil.copyfile(img_tmp_path, img_static_path)
     return "tmp/Sk_aa.png"
 
