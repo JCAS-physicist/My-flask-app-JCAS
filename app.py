@@ -24,17 +24,21 @@ def prepare_executable(binary_name):
     return tmp_bin_path
 
 def s_k_cc(phi, ts):
-    lista = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    lista2 = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09]
-
-    if ((phi in lista) and (ts in lista)):
-        path_file = f"Sk_eta_{phi}00_Temp_{ts}00.dat"
-    elif ((phi in lista) and (ts in lista2)):
-        path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
-    elif ((phi in lista) and (ts not in lista2)):
-        path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
+    phi = float(phi)
+    ts = float(ts)
+    
+    if phi < 1:
+        phi_str = f"{phi:.3f}"  
     else:
-        path_file = f"Sk_eta_{phi}0_Temp_{ts}.dat"
+        phi_str = f"{int(phi) * 10}"  
+
+    if ts < 1:
+        ts_str = f"{ts:.3f}"  
+    else:
+        ts_str = f"{int(ts)}"  
+
+    path_file = f"Sk_eta_{phi_str}_Temp_{ts_str}.dat"
+    
 
     with open(path_file, "r") as Sks:
         sk_cc_path = os.path.join(TMP_DIR, "Sk_cc.dat")
@@ -65,17 +69,20 @@ def s_k_cc(phi, ts):
 
 
 def s_k_ca(phi, ts):
-    lista = [0.1 * i for i in range(1, 10)]
-    lista2 = [0.01 * i for i in range(1, 10)]
+    phi = float(phi)
+    ts = float(ts)
     
-    if ((phi in lista) and (ts in lista)):
-        path_file = f"Sk_eta_{phi}00_Temp_{ts}00.dat"
-    elif ((phi in lista) and (ts in lista2)):
-        path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
-    elif ((phi in lista) and (ts not in lista2)):
-        path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
+    if phi < 1:
+        phi_str = f"{phi:.3f}"  
     else:
-        path_file = f"Sk_eta_{phi}0_Temp_{ts}.dat"
+        phi_str = f"{int(phi) * 10}"  
+
+    if ts < 1:
+        ts_str = f"{ts:.3f}"  
+    else:
+        ts_str = f"{int(ts)}"  
+
+    path_file = f"Sk_eta_{phi_str}_Temp_{ts_str}.dat"
 
     with open(path_file, "r") as Sks:
         sk_ca_path = os.path.join(TMP_DIR, "Sk_ca.dat")
@@ -103,17 +110,20 @@ def s_k_ca(phi, ts):
     return "tmp/Sk_ca.png"
 
 def s_k_aa(phi, ts):
-    lista = [0.1 * i for i in range(1, 10)]
-    lista2 = [0.01 * i for i in range(1, 10)]
+    phi = float(phi)
+    ts = float(ts)
     
-    if ((phi in lista) and (ts in lista)):
-        path_file = f"Sk_eta_{phi}00_Temp_{ts}00.dat"
-    elif ((phi in lista) and (ts in lista2)):
-        path_file = f"Sk_eta_{phi}00_Temp_{ts}0.dat"
-    elif ((phi in lista) and (ts not in lista2)):
-        path_file = f"Sk_eta_{phi}00_Temp_{ts}.dat"
+    if phi < 1:
+        phi_str = f"{phi:.3f}"  
     else:
-        path_file = f"Sk_eta_{phi}0_Temp_{ts}.dat"
+        phi_str = f"{int(phi) * 10}"  
+
+    if ts < 1:
+        ts_str = f"{ts:.3f}"  
+    else:
+        ts_str = f"{int(ts)}"  
+
+    path_file = f"Sk_eta_{phi_str}_Temp_{ts_str}.dat"
 
     with open(path_file, "r") as Sks:
         sk_aa_path = os.path.join(TMP_DIR, "Sk_aa.dat")
@@ -141,17 +151,20 @@ def s_k_aa(phi, ts):
     return "tmp/Sk_aa.png"
 
 def msd_jcas(phi, ts):
-    lista = [0.1 * i for i in range(1, 10)]
-    lista2 = [0.01 * i for i in range(1, 10)]
+    phi = float(phi)
+    ts = float(ts)
     
-    if ((phi in lista) and (ts in lista)):
-        path_file = f"Wt_eta_{phi}00_Temp_{ts}00.dat"
-    elif ((phi in lista) and (ts in lista2)):
-        path_file = f"Wt_eta_{phi}00_Temp_{ts}0.dat"
-    elif ((phi in lista) and (ts not in lista2)):
-        path_file = f"Wt_eta_{phi}00_Temp_{ts}.dat"
+    if phi < 1:
+        phi_str = f"{phi:.3f}"  
     else:
-        path_file = f"Wt_eta_{phi}0_Temp_{ts}.dat"
+        phi_str = f"{int(phi) * 10}"  
+
+    if ts < 1:
+        ts_str = f"{ts:.3f}"  
+    else:
+        ts_str = f"{int(ts)}"  
+
+    path_file = f"Wt_eta_{phi_str}_Temp_{ts_str}.dat"
 
     with open(path_file, "r") as MSD_com:
         msd_a = []
