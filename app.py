@@ -24,9 +24,6 @@ def prepare_executable(binary_name):
     return tmp_bin_path
 
 def s_k_cc(phi, ts):
-    phi = float(phi)
-    ts = float(ts)
-    
     if phi < 1:
         phi_str = f"{phi:.3f}"  
     else:
@@ -71,9 +68,6 @@ def s_k_cc(phi, ts):
 
 
 def s_k_ca(phi, ts):
-    phi = float(phi)
-    ts = float(ts)
-    
     if phi < 1:
         phi_str = f"{phi:.3f}"  
     else:
@@ -114,9 +108,6 @@ def s_k_ca(phi, ts):
     return "tmp/Sk_ca.png"
 
 def s_k_aa(phi, ts):
-    phi = float(phi)
-    ts = float(ts)
-    
     if phi < 1:
         phi_str = f"{phi:.3f}"  
     else:
@@ -157,9 +148,6 @@ def s_k_aa(phi, ts):
     return "tmp/Sk_aa.png"
 
 def msd_jcas(phi, ts):
-    phi = float(phi)
-    ts = float(ts)
-    
     if phi < 1:
         phi_str = f"{phi:.3f}"  
     else:
