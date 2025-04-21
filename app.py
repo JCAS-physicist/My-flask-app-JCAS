@@ -207,6 +207,8 @@ def build_path(phi, ts):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    phi = None
+    ts = None
     result = None
     ratio = None
     asym = None
