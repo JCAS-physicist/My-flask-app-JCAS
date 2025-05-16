@@ -137,6 +137,16 @@ footer {
   text-align: center;
 }
 
+.container {
+    max-width: 800px;
+    margin: 80px auto;
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
 .intro {
     font-size: 1.1em;
     color: #555;
@@ -174,4 +184,3 @@ h2 {
 .button-link:hover {
     background-color: #0056b3;
 }
-
