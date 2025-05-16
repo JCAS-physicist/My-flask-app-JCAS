@@ -230,7 +230,11 @@ def build_msd_path(phi, ts):
     filename = f"Wt_eta_{phi_str}_Temp_{ts_str}.dat"
     return filename
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
+def home():
+    return render_template("home.html")
+
+@app.route("/app", methods=["GET", "POST"])
 def index():
     phi = None
     ts = None
