@@ -113,6 +113,11 @@
         <p>These are the Dynamics results for &phi; = {{ phi }} and T<sup>*</sup> = {{ ts }}:</p>
         <hr>
         <p>Now choose the Arrested option with the same data to view the MSD image.</p>
+        <hr>
+        <div class="download-links">
+            <p>You can download the file here:</p>
+            <a href="{{ url_for('download_file_msd') }}" download="msd.dat">MSD</a>
+        </div>
         {% endif %}
     {% endif %}
 </div>
