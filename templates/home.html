@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio - Simulador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Structure and Dynamics Factors Simulator</h1>
+        <p class="intro">
+            This application allows you to calculate and graph physical properties such as the structure factor and diffusion
+            of a system based on parameters such as particle size, volume fraction (<i>ϕ</i>), and reduced temperature (<i>T*</i>).
+        </p>
+
+        <h2>Instructions</h2>
+        <ul class="instructions">
+            <li>Enter the radius of the large and small particles.</li>
+            <li>Select values for <i>ϕ</i> (phi) and <i>T*</i> (reduced temperature).</li>
+            <li>Choose whether to calculate structure or dynamics.</li>
+            <li>Press <strong>Submit</strong> to generate results.</li>
+        </ul>
+
+        <a href="{{ url_for('index') }}" class="button-link">
+            Go to the Application
+        </a>
+    </div>
+</body>
+</html>
