@@ -81,11 +81,11 @@
     {% if result %}
         <h3>Results:</h3>
         <p>The asymmetry of your system is {{ rat }}.</p>
+
+        {% if select_option == "Structure" %}
         <h4>The Big The Small</h4>
         <p>{{ result }}</p>
         <hr>
-
-        {% if select_option == "Structure" %}
         <p>These are the S(k)s for &phi; = {{ phi }} and T<sup>*</sup> = {{ ts }}:</p>
         <div class="graph-container">
             <img src="{{ url_for('static', filename='tmp/Sk_cc.png') }}" alt="S(k)_cation-cation">
@@ -93,17 +93,26 @@
             <img src="{{ url_for('static', filename='tmp/Sk_ca.png') }}" alt="S(k)_cation-anion">
         </div>
         <hr>
+        <p>These is the MSD for &phi; = {{ phi }} and T<sup>*</sup> = {{ ts }}:</p>
+        <div class="graph-container">
+            <img src="{{ url_for('static', filename='tmp/msd_jcas.png') }}" alt="MSD">
+        </div>
+        <hr>
         <div class="download-links">
             <p>You can download the files here:</p>
             <a href="{{ url_for('download_file_Sk_cc') }}" download="Sk_cc.dat">S(k)_cc</a><br>
             <a href="{{ url_for('download_file_Sk_ca') }}" download="Sk_ca.dat">S(k)_ca</a><br>
-            <a href="{{ url_for('download_file_Sk_aa') }}" download="Sk_aa.dat">S(k)_aa</a>
+            <a href="{{ url_for('download_file_Sk_aa') }}" download="Sk_aa.dat">S(k)_aa</a><br>
+            <a href="{{ url_for('download_file_msd') }}" download="msd.dat">MSD</a>
         </div>
         {% elif select_option == "Dynamics" %}
-        <p>These are the Dynamics results for &phi; = {{ phi }} and T<sup>*</sup> = {{ ts }}::</p>
-        <div class="graph-container">
-            <img src="{{ url_for('static', filename='tmp/MSD.png') }}" alt="MSD">
-        </div>
+        <h2>The Difusion coefficient </h2>
+        <h4>The Big The Small</h4>
+        <p>{{ result }}</p>
+        <hr>
+        <p>These are the Dynamics results for &phi; = {{ phi }} and T<sup>*</sup> = {{ ts }}:</p>
+        <hr>
+        <p>Now choose the Arrested option with the same data to view the MSD image.</p>
         {% endif %}
     {% endif %}
 </div>
